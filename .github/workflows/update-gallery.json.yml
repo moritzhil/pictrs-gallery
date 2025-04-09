@@ -26,24 +26,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      # Überprüfen der Dateien im Repository, um sicherzustellen, dass pictrs_scraper.py da ist
-      - name: Check repository structure
+      # Überprüfen, ob das Verzeichnis existiert, und erstellen, falls nicht
+      - name: Create pictrs-gallery directory if it doesn't exist
         run: |
-          echo "Repository-Struktur:"
-          ls -la  # Zeigt die Struktur des Repositories an
+          if [ ! -d "pictrs-gallery" ]; then
+            mkdir pictrs-gallery
+            echo "Verzeichnis pictrs-gallery erstellt"
+          else
+            echo "Verzeichnis pictrs-gallery existiert bereits"
+          fi
 
-      # Führe das Skript direkt im Root-Verzeichnis aus
+      # Wechsel in das Verzeichnis pictrs-gallery und führe das Skript aus
       - name: Run Pictrs Scraper
         run: |
-          python pictrs_scraper.py  # Skript aus dem Root-Verzeichnis ausführen
+          # Sicherstellen, dass wir im richtigen Verzeichnis sind
+          ls -la  # Zeige alle Dateien im aktuellen Verzeichnis an, um sicherzustellen, dass pictrs_scraper.py vorhanden ist
+          python pictrs_scraper.py  # Führe das Skript aus, ohne den Verzeichnispfad zu ändern
 
       # Commit und Push der geänderten 'galerien.json'
       - name: Commit and push updated gallery.json
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          git add galerien.json  # Sicherstellen, dass wir die geänderte JSON-Datei committen
+          git add galerien.json  # Stelle sicher, dass der Pfad zur Datei korrekt ist
           git commit -m 'Update gallery.json'
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token für automatische Commits und Pushes
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token, um automatisch zu committen und zu pushen
