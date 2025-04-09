@@ -32,6 +32,7 @@ def save_to_json(bilder):
         'bilder': bilder
     }
 
+    # Speichern der Galerie als JSON-Datei unter dem Namen 'gallerie_best-of.json'
     with open('gallerie_best-of.json', 'w', encoding='utf-8') as f:
         json.dump(gallery_data, f, ensure_ascii=False, indent=4)
     print("✔️  JSON-Datei 'gallerie_best-of.json' erfolgreich gespeichert!")
