@@ -53,11 +53,16 @@ def fetch_galerien():
 # Funktion, um die gesammelten Galerie-Daten als JSON-Datei zu speichern
 def save_to_json(galerien):
     # Den Pfad zum aktuellen Verzeichnis ermitteln
-    current_directory = os.path.dirname(os.path.realpath(__file__))  # Holt den Pfad des Skripts
-    json_file_path = os.path.join(current_directory, 'galerien.json')  # Setzt den Pfad für die JSON-Datei
+    current_directory = os.getcwd()  # Verwendet das Arbeitsverzeichnis der GitHub Actions Umgebung
+    json_file_path = os.path.join(current_directory, 'pictrs-gallery', 'galerien.json')  # Setzt den Pfad für die JSON-Datei
 
     # Überprüfen, ob der Pfad korrekt ist
     print(f"Speichere die Datei in: {json_file_path}")
+
+    # Überprüfe, ob das Verzeichnis existiert, falls nicht, dann erstelle es
+    if not os.path.exists(os.path.dirname(json_file_path)):
+        os.makedirs(os.path.dirname(json_file_path))
+        print(f"Verzeichnis {os.path.dirname(json_file_path)} wurde erstellt.")
 
     # Die JSON-Datei speichern
     with open(json_file_path, 'w', encoding='utf-8') as f:
