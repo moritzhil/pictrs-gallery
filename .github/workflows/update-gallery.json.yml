@@ -23,11 +23,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      - name: Run pictrs scraper
+      - name: Run pictrs scraper for gallery
         run: python pictrs_scraper.py
 
       - name: Run pictrs scraper for best-of gallery
         run: python pictrs_scraper_best-of.py
+
+      - name: Check if files are created and print directory
+        run: |
+          echo "Aktuelles Verzeichnis:"
+          pwd
+          echo "Inhalt des Verzeichnisses:"
+          ls -la
+          echo "Überprüfe, ob JSON-Dateien vorhanden sind:"
+          ls -la *.json  # Überprüfen, ob die JSON-Dateien existieren
 
       - name: Commit and push JSON files
         run: |
