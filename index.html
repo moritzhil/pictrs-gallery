@@ -3,49 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <title>Galerien – Moritz Hilpert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #222;
+      --card: #fff;
+      --card-shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111;
+        --text: #f2f2f2;
+        --card: #1e1e1e;
+        --card-shadow: rgba(255, 255, 255, 0.05);
+      }
+    }
+
     body {
-      font-family: sans-serif;
       margin: 0;
       padding: 2rem;
-      background: #f9f9f9;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
+
     h1 {
       text-align: center;
     }
+
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
     }
+
     .card {
-      background: white;
+      background: var(--card);
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 12px var(--card-shadow);
       overflow: hidden;
-      transition: transform 0.2s;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
+
     .card:hover {
       transform: translateY(-4px);
+      box-shadow: 0 4px 20px var(--card-shadow);
     }
+
     .card img {
       width: 100%;
       height: auto;
       display: block;
     }
+
     .card-content {
       padding: 1rem;
     }
+
     .card-title {
       font-size: 1.1rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
     }
+
     .card-details {
       font-size: 0.9rem;
-      color: #666;
+      color: gray;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .card-details {
+        color: #aaa;
+      }
     }
   </style>
 </head>
@@ -73,10 +105,3 @@
           galleryContainer.appendChild(card);
         });
       })
-      .catch(err => {
-        document.getElementById('gallery').innerHTML = '<p>Fehler beim Laden der Galerie 😢</p>';
-        console.error(err);
-      });
-  </script>
-</body>
-</html>
