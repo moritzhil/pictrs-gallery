@@ -17,12 +17,16 @@ def fetch_bilder_from_galerie():
 
     # Alle Bild-Links der Galerie finden
     image_tags = soup.find_all('img', class_='picthumbs js-picthumbs')  # Passen Sie hier die richtige Klasse an
-    
+    print(f"{len(image_tags)} Bilder in der Galerie gefunden.")
+
     for img_tag in image_tags:
         bild_url = img_tag.get('src')
         if bild_url:
+            print(f"Gefundenes Bild-URL: {bild_url}")  # Zum Debuggen: Bild-URL anzeigen
             # Ändern des Bild-URL von "medium" zu "large"
-            bild_url = bild_url.replace('/medium_', '/large_')
+            if '/medium_' in bild_url:
+                bild_url = bild_url.replace('/medium_', '/large_')
+                print(f"Ändertes Bild-URL: {bild_url}")  # Zum Debuggen: Geänderte Bild-URL anzeigen
             bilder.append(bild_url)
 
     return bilder
