@@ -29,14 +29,15 @@ jobs:
       # Führe das Scraping-Skript aus
       - name: Run Pictrs Scraper
         run: |
-          python pictrs_scraper.py  # Stellen sicher, dass pictrs_scraper.py existiert und korrekt funktioniert
+          cd pictrs-gallery  # Wechsle in das Verzeichnis, wo pictrs_scraper.py ist
+          python pictrs_scraper.py  # Stelle sicher, dass das Skript im richtigen Verzeichnis läuft
 
       # Commit und Push der geänderten 'galerien.json'
       - name: Commit and push updated gallery.json
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          git add galerien.json
+          git add pictrs-gallery/galerien.json  # Stelle sicher, dass der Pfad zur Datei korrekt ist
           git commit -m 'Update gallery.json'
           git push
         env:
