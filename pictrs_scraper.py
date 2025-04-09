@@ -22,17 +22,14 @@ def fetch_galerien():
         galerie_titel = gallery_link.find('span', class_='albums-grid-title').get_text().strip()
         galerie_bilder_count = gallery_link.find('small', class_='albums-grid-details').get_text().strip()
 
-        # Vorschaubild aus style-Attribut extrahieren
+        # Vorschaubild korrekt aus CDN-URL extrahieren
         bild_div = gallery_link.find('div', class_='albums-grid-image')
-        bild_style = bild_div.get('style')
-        bild_url = None
+        bild_style = bild_div.get('style') if bild_div else ''
+        bild_url = ''
 
-        if bild_style and 'url(' in bild_style:
+        if 'url(' in bild_style:
             bild_url = bild_style.split('url(')[-1].split(')')[0].strip('"\'')
-            if not bild_url.startswith('/'):
-                bild_url = '/' + bild_url  # Falls nötig
 
-        full_image_url = f'https://www.pictrs.com{bild_url}' if bild_url else ''
         bild_slug = bild_url.split('/')[-1] if bild_url else ''
 
         galerie = {
@@ -40,9 +37,9 @@ def fetch_galerien():
             'titel': galerie_titel,
             'bilder_count': galerie_bilder_count,
             'bilder': [{
-                'bild': full_image_url,
+                'bild': bild_url,  # Direkt verwenden, da es schon die volle CDN-URL ist
                 'link': f'https://www.pictrs.com/moritz-hilpert/{galerie_slug}/{bild_slug}'
-            }] if full_image_url else []
+            }] if bild_url else []
         }
 
         galerien.append(galerie)
