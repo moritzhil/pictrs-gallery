@@ -44,6 +44,9 @@ def fetch_galerien():
             # Prüfen, ob die Bild-URL relativ ist
             if bild_url.startswith('/'):
                 bild_url = BASE_URL + bild_url  # Wenn relativ, BASE_URL hinzufügen
+            
+            # Ersetze "_medium" mit "_large" für das Vorschaubild
+            bild_url = bild_url.replace('/medium_', '/large_')
 
         galerie = {
             'titel': galerie_titel,
