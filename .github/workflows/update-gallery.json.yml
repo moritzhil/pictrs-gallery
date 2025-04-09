@@ -26,10 +26,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      # Führe das Scraping-Skript aus
+      # Überprüfen, ob das Verzeichnis existiert, und erstellen, falls nicht
+      - name: Create pictrs-gallery directory if it doesn't exist
+        run: |
+          if [ ! -d "pictrs-gallery" ]; then
+            mkdir pictrs-gallery
+            echo "Verzeichnis pictrs-gallery erstellt"
+          else
+            echo "Verzeichnis pictrs-gallery existiert bereits"
+          fi
+
+      # Wechsel in das Verzeichnis pictrs-gallery und führe das Skript aus
       - name: Run Pictrs Scraper
         run: |
-          cd pictrs-gallery  # Wechsle in das Verzeichnis, wo pictrs_scraper.py ist
+          cd pictrs-gallery  # Wechsle in das Verzeichnis
           python pictrs_scraper.py  # Stelle sicher, dass das Skript im richtigen Verzeichnis läuft
 
       # Commit und Push der geänderten 'galerien.json'
