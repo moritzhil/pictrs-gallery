@@ -1,4 +1,8 @@
-import requests
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
 
@@ -6,18 +10,25 @@ import json
 GALERIE_URL = 'https://www.pictrs.com/moritz-hilpert/8816720/ravello?l=de'
 BASE_URL = 'https://www.pictrs.com'
 
-def fetch_bilder_aus_galerie(galerie_url):
-    response = requests.get(galerie_url)
-    
-    if response.status_code != 200:
-        print(f"Fehler beim Abrufen der Seite. Status Code: {response.status_code}")
-        return []
+# Initialisiere den WebDriver
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Optional: Im Hintergrund ausführen (ohne GUI)
+chrome_service = Service(executable_path='path/to/chromedriver')  # Ersetze dies durch den Pfad zu deinem ChromeDriver
 
-    soup = BeautifulSoup(response.text, 'html.parser')
+def fetch_bilder_aus_galerie(galerie_url):
+    # Starte den WebDriver
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    driver.get(galerie_url)
+    
+    # Warte darauf, dass die Seite vollständig geladen wird
+    time.sleep(5)  # Warten auf die Ladezeit der Seite, ggf. erhöhen
+
+    # Holen Sie sich den Seitenquelltext nach dem Laden
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
     bilder = []
 
     # Alle <img> Tags mit der Klasse 'picthumbs js-picthumbs' extrahieren
-    img_tags = soup.find_all('img', class_='')
+    img_tags = soup.find_all('img', class_='picthumbs js-picthumbs')
     print(f"{len(img_tags)} Bilder gefunden")
 
     # Alle Bild-URLs extrahieren
@@ -33,6 +44,9 @@ def fetch_bilder_aus_galerie(galerie_url):
             bild_url = BASE_URL + bild_url
 
         bilder.append(bild_url)
+
+    # Schließen des Webdrivers
+    driver.quit()
 
     return bilder
 
