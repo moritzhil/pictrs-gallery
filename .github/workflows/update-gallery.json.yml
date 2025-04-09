@@ -26,21 +26,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      # Überprüfen, ob das Verzeichnis existiert, und erstellen, falls nicht
-      - name: Create pictrs-gallery directory if it doesn't exist
+      # Sicherstellen, dass das Verzeichnis korrekt ist
+      - name: Check repository structure
         run: |
-          if [ ! -d "pictrs-gallery" ]; then
-            mkdir pictrs-gallery
-            echo "Verzeichnis pictrs-gallery erstellt"
-          else
-            echo "Verzeichnis pictrs-gallery existiert bereits"
-          fi
+          ls -la  # Zeigt die Struktur des Repositories an
 
       # Wechsel in das Verzeichnis pictrs-gallery und führe das Skript aus
       - name: Run Pictrs Scraper
         run: |
-          cd pictrs-gallery  # Wechsle in das Verzeichnis pictrs-gallery
-          ls -la  # Zeige alle Dateien im Verzeichnis an, um sicherzustellen, dass pictrs_scraper.py vorhanden ist
+          cd ..  # Gehe zum Hauptverzeichnis des Repositories (pictrs-gallery)
+          ls -la  # Zeigt den Inhalt des Verzeichnisses an, um sicherzustellen, dass pictrs_scraper.py vorhanden ist
           python pictrs_scraper.py  # Führe das Skript aus
 
       # Commit und Push der geänderten 'galerien.json'
@@ -48,7 +43,7 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          git add pictrs-gallery/galerien.json  # Stelle sicher, dass der Pfad korrekt ist
+          git add galeries.json  # Sicherstellen, dass der Pfad korrekt ist
           git commit -m 'Update gallery.json'
           git push
         env:
