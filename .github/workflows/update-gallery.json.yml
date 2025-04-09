@@ -2,54 +2,41 @@ name: Update Gallery JSON
 
 on:
   schedule:
-    - cron: "0 * * * *"  # Alle 1 Stunde
-  workflow_dispatch:  # Möglichkeit, den Workflow manuell zu triggern
+    - cron: '0 * * * *'  # Jede Stunde
+  workflow_dispatch:      # Manuelles Ausführen möglich
 
 jobs:
   update-gallery-json:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout des Repositories
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # Setzen der Python-Version
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # Installiere die notwendigen Dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      # Überprüfen, ob das Verzeichnis existiert, und erstellen, falls nicht
-      - name: Create pictrs-gallery directory if it doesn't exist
+      - name: Run pictrs scraper
+        run: python pictrs_scraper.py
+
+      - name: Commit and push JSON
         run: |
-          if [ ! -d "pictrs-gallery" ]; then
-            mkdir pictrs-gallery
-            echo "Verzeichnis pictrs-gallery erstellt"
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "Keine Änderungen – nichts zu committen."
           else
-            echo "Verzeichnis pictrs-gallery existiert bereits"
+            git add galerien.json
+            git commit -m "Update gallery.json"
+            git push
           fi
-
-      # Wechsel in das Verzeichnis pictrs-gallery und führe das Skript aus
-      - name: Run Pictrs Scraper
-        run: |
-          # Sicherstellen, dass wir im richtigen Verzeichnis sind
-          ls -la  # Zeige alle Dateien im aktuellen Verzeichnis an, um sicherzustellen, dass pictrs_scraper.py vorhanden ist
-          python pictrs_scraper.py  # Führe das Skript aus, ohne den Verzeichnispfad zu ändern
-
-      # Commit und Push der geänderten 'galerien.json'
-      - name: Commit and push updated gallery.json
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-          git add galerien.json  # Stelle sicher, dass der Pfad zur Datei korrekt ist
-          git commit -m 'Update gallery.json'
-          git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token, um automatisch zu committen und zu pushen
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
