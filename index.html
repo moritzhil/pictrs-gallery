@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Galerien – Moritz Hilpert</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .card-content {
+      padding: 1rem;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .card-details {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>📸 Galerien von Moritz Hilpert</h1>
+  <div id="gallery" class="gallery-grid"></div>
+
+  <script>
+    fetch('galerien.json')
+      .then(response => response.json())
+      .then(data => {
+        const galleryContainer = document.getElementById('gallery');
+        data.forEach(galerie => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <a href="${galerie.bilder[0]?.link}" target="_blank">
+              <img src="${galerie.bilder[0]?.bild}" alt="${galerie.titel}">
+            </a>
+            <div class="card-content">
+              <div class="card-title">${galerie.titel}</div>
+              <div class="card-details">${galerie.bilder_count || ''} Bilder</div>
+            </div>
+          `;
+          galleryContainer.appendChild(card);
+        });
+      })
+      .catch(err => {
+        document.getElementById('gallery').innerHTML = '<p>Fehler beim Laden der Galerie 😢</p>';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
