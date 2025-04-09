@@ -39,8 +39,9 @@ jobs:
       # Wechsel in das Verzeichnis pictrs-gallery und führe das Skript aus
       - name: Run Pictrs Scraper
         run: |
-          cd pictrs-gallery  # Verzeichnis wechseln
-          python pictrs_scraper.py  # Skript ausführen
+          cd pictrs-gallery  # Wechsle in das Verzeichnis pictrs-gallery
+          ls -la  # Zeige alle Dateien im Verzeichnis an, um sicherzustellen, dass pictrs_scraper.py vorhanden ist
+          python pictrs_scraper.py  # Führe das Skript aus
 
       # Commit und Push der geänderten 'galerien.json'
       - name: Commit and push updated gallery.json
