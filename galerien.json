@@ -1,46 +1,50 @@
 [
     {
-        "slug": "8816720",
+        "id": "8816720",
+        "slug": "ravello?l=de",
         "titel": "Ravello",
+        "bilder_count": "5 Bilder",
         "bilder": [
             {
                 "bild": "https://www.pictrs.com'https://pictrs2.b-cdn.net/ffb60947d662e2476c4e13c11cd9c3a5/medium_DSC00251.jpg?v=1744114282'",
-                "link": "https://deinshop.pictrs.com/galerie/8816720/medium_DSC00251.jpg?v=1744114282'"
+                "link": "https://www.pictrs.com/moritz-hilpert/8816720/ravello?l=de"
             }
-        ],
-        "bilder_count": "5 Bilder"
+        ]
     },
     {
-        "slug": "9199535",
+        "id": "9199535",
+        "slug": "neapel?l=de",
         "titel": "Neapel",
+        "bilder_count": "6 Bilder",
         "bilder": [
             {
                 "bild": "https://www.pictrs.com'https://pictrs2.b-cdn.net/768e68c25b6883def5dc183731aa4b6b/medium_DSC00005.jpg?v=1744114529'",
-                "link": "https://deinshop.pictrs.com/galerie/9199535/medium_DSC00005.jpg?v=1744114529'"
+                "link": "https://www.pictrs.com/moritz-hilpert/9199535/neapel?l=de"
             }
-        ],
-        "bilder_count": "6 Bilder"
+        ]
     },
     {
-        "slug": "6893889",
+        "id": "6893889",
+        "slug": "rotterdam?l=de",
         "titel": "Rotterdam",
+        "bilder_count": "31 Bilder",
         "bilder": [
             {
                 "bild": "https://www.pictrs.com'https://pictrs2.b-cdn.net/effb216dc2de861bb3e7e0ba4bec5f2e/medium_DSC06296.jpg?v=1744116410'",
-                "link": "https://deinshop.pictrs.com/galerie/6893889/medium_DSC06296.jpg?v=1744116410'"
+                "link": "https://www.pictrs.com/moritz-hilpert/6893889/rotterdam?l=de"
             }
-        ],
-        "bilder_count": "31 Bilder"
+        ]
     },
     {
-        "slug": "7742354",
+        "id": "7742354",
+        "slug": "den-haag?l=de",
         "titel": "Den Haag",
+        "bilder_count": "25 Bilder",
         "bilder": [
             {
                 "bild": "https://www.pictrs.com'https://pictrs2.b-cdn.net/06764debd6e9afb088c4352a2e29292c/medium_DSC06379.jpg?v=1744115908'",
-                "link": "https://deinshop.pictrs.com/galerie/7742354/medium_DSC06379.jpg?v=1744115908'"
+                "link": "https://www.pictrs.com/moritz-hilpert/7742354/den-haag?l=de"
             }
-        ],
-        "bilder_count": "25 Bilder"
+        ]
     }
 ]
