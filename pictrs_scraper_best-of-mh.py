@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 
 BASE_URL = 'https://www.pictrs.com'
-GALERIE_URL = 'https://www.pictrs.com/moritz-hilpert/8447488/best-of-mh?l=de'  # Beispiel-URL einer spezifischen Galerie
+GALERIE_URL = 'https://www.pictrs.com/moritz-hilpert/8816720/ravello?l=de'  # Beispiel-URL einer spezifischen Galerie
 
 def fetch_bilder_from_galerie():
     response = requests.get(GALERIE_URL)
@@ -16,12 +16,13 @@ def fetch_bilder_from_galerie():
     bilder = []
 
     # Alle Bild-Links der Galerie finden
-    image_tags = soup.find_all('img', class_='gallery-image-class')  # Passen Sie hier die richtige Klasse an
+    image_tags = soup.find_all('img', class_='picthumbs js-picthumbs')  # Passen Sie hier die richtige Klasse an
     
     for img_tag in image_tags:
         bild_url = img_tag.get('src')
         if bild_url:
-            bild_url = BASE_URL + bild_url
+            # Ändern des Bild-URL von "medium" zu "large"
+            bild_url = bild_url.replace('/medium_', '/large_')
             bilder.append(bild_url)
 
     return bilder
@@ -31,9 +32,9 @@ def save_to_json(bilder):
         'bilder': bilder
     }
 
-    with open('bilder.json', 'w', encoding='utf-8') as f:
+    with open('gallerie_best-of.json', 'w', encoding='utf-8') as f:
         json.dump(gallery_data, f, ensure_ascii=False, indent=4)
-    print("✔️  JSON-Datei für Galerie erfolgreich gespeichert!")
+    print("✔️  JSON-Datei 'gallerie_best-of.json' erfolgreich gespeichert!")
 
 if __name__ == "__main__":
     bilder = fetch_bilder_from_galerie()
