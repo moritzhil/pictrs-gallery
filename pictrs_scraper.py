@@ -22,7 +22,12 @@ def fetch_galerien():
     # Durch alle gefundenen Galerie-Links iterieren
     for gallery_link in gallery_links:
         relative_url = gallery_link.get('href')  # z.B. /moritz-hilpert/8816720/ravello?l=de
-        full_url = BASE_URL + relative_url  # Komplettiere die URL
+        
+        # Überprüfen, ob die URL bereits mit der BASE_URL beginnt
+        if not relative_url.startswith('https://'):
+            full_url = BASE_URL + relative_url  # Komplettiere die URL nur, wenn sie relativ ist
+        else:
+            full_url = relative_url  # Wenn sie bereits absolut ist, verwende sie direkt
 
         galerie_titel = gallery_link.find('span', class_='albums-grid-title').get_text().strip()
         galerie_bilder_count = gallery_link.find('small', class_='albums-grid-details').get_text().strip()
