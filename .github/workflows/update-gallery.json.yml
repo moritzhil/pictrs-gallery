@@ -1,0 +1,38 @@
+name: Update Gallery JSON
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Alle 1 Stunde
+  workflow_dispatch:  # Möglichkeit, den Workflow manuell zu triggern
+
+jobs:
+  update-gallery-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+
+      - name: Run Pictrs Scraper
+        run: |
+          python pictrs_scraper.py
+
+      - name: Commit and push updated gallery.json
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add galeries.json
+          git commit -m 'Update gallery.json'
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
