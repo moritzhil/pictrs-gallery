@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-import os
 
 # Deine Pictrs-Shop-URL
 SHOP_URL = 'https://www.pictrs.com/moritz-hilpert?l=de'
@@ -9,7 +8,6 @@ SHOP_URL = 'https://www.pictrs.com/moritz-hilpert?l=de'
 # Funktion zum Abrufen und Parsen der Galerien und Bilder von Pictrs
 def fetch_galerien():
     response = requests.get(SHOP_URL)
-    
     if response.status_code != 200:
         print(f"Fehler beim Abrufen der Seite. Status Code: {response.status_code}")
         return []
@@ -52,17 +50,7 @@ def fetch_galerien():
 
 # Funktion, um die gesammelten Galerie-Daten als JSON-Datei zu speichern
 def save_to_json(galerien):
-    # Den Pfad zum aktuellen Verzeichnis ermitteln
-    current_directory = os.getcwd()  # Verwendet das Arbeitsverzeichnis der GitHub Actions Umgebung
-    json_file_path = os.path.join(current_directory, 'pictrs-gallery', 'galerien.json')  # Setzt den Pfad für die JSON-Datei
-
-    # Überprüfen, ob der Pfad korrekt ist
-    print(f"Speichere die Datei in: {json_file_path}")
-
-    # Überprüfe, ob das Verzeichnis existiert, falls nicht, dann erstelle es
-    if not os.path.exists(os.path.dirname(json_file_path)):
-        os.makedirs(os.path.dirname(json_file_path))
-        print(f"Verzeichnis {os.path.dirname(json_file_path)} wurde erstellt.")
+    json_file_path = 'galerien.json'  # Speichert die Datei im aktuellen Verzeichnis
 
     # Die JSON-Datei speichern
     with open(json_file_path, 'w', encoding='utf-8') as f:
@@ -74,3 +62,5 @@ if __name__ == "__main__":
     galerien = fetch_galerien()  # Galerien abrufen
     if galerien:
         save_to_json(galerien)  # Wenn Galerien gefunden wurden, speichere sie als JSON
+    else:
+        print("Keine Galerien gefunden.")
