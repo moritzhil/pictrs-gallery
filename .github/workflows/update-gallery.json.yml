@@ -1,4 +1,4 @@
-name: Update Gallery JSON
+name: Update Gallery JSON and Best-Of JSON
 
 on:
   schedule:
@@ -26,16 +26,21 @@ jobs:
       - name: Run pictrs scraper
         run: python pictrs_scraper.py
 
-      - name: Commit and push JSON
+      - name: Run pictrs scraper for best-of gallery
+        run: python pictrs_scraper_best-of.py
+
+      - name: Commit and push JSON files
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+          # Überprüfen, ob Änderungen vorliegen
           if git diff --quiet && git diff --staged --quiet; then
             echo "Keine Änderungen – nichts zu committen."
           else
             git add galerien.json
-            git commit -m "Update gallery.json"
+            git add gallerie_best-of.json
+            git commit -m "Update galerien.json and gallerie_best-of.json"
             git push
           fi
         env:
