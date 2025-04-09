@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-import os  # Importiere os, um den Pfad zum aktuellen Verzeichnis zu ermitteln
+import os
 
 # Deine Pictrs-Shop-URL
 SHOP_URL = 'https://www.pictrs.com/moritz-hilpert?l=de'
@@ -55,6 +55,9 @@ def save_to_json(galerien):
     # Den Pfad zum aktuellen Verzeichnis ermitteln
     current_directory = os.path.dirname(os.path.realpath(__file__))  # Holt den Pfad des Skripts
     json_file_path = os.path.join(current_directory, 'galerien.json')  # Setzt den Pfad für die JSON-Datei
+
+    # Überprüfen, ob der Pfad korrekt ist
+    print(f"Speichere die Datei in: {json_file_path}")
 
     # Die JSON-Datei speichern
     with open(json_file_path, 'w', encoding='utf-8') as f:
