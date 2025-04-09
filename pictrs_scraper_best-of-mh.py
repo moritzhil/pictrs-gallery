@@ -1,0 +1,41 @@
+import requests
+from bs4 import BeautifulSoup
+import json
+
+BASE_URL = 'https://www.pictrs.com'
+GALERIE_URL = 'https://www.pictrs.com/moritz-hilpert/8447488/best-of-mh?l=de'  # Beispiel-URL einer spezifischen Galerie
+
+def fetch_bilder_from_galerie():
+    response = requests.get(GALERIE_URL)
+    
+    if response.status_code != 200:
+        print(f"Fehler beim Abrufen der Seite. Status Code: {response.status_code}")
+        return []
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    bilder = []
+
+    # Alle Bild-Links der Galerie finden
+    image_tags = soup.find_all('img', class_='gallery-image-class')  # Passen Sie hier die richtige Klasse an
+    
+    for img_tag in image_tags:
+        bild_url = img_tag.get('src')
+        if bild_url:
+            bild_url = BASE_URL + bild_url
+            bilder.append(bild_url)
+
+    return bilder
+
+def save_to_json(bilder):
+    gallery_data = {
+        'bilder': bilder
+    }
+
+    with open('bilder.json', 'w', encoding='utf-8') as f:
+        json.dump(gallery_data, f, ensure_ascii=False, indent=4)
+    print("✔️  JSON-Datei für Galerie erfolgreich gespeichert!")
+
+if __name__ == "__main__":
+    bilder = fetch_bilder_from_galerie()
+    if bilder:
+        save_to_json(bilder)  # Wenn Bilder gefunden wurden, speichere sie als JSON
