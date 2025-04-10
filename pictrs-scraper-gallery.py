@@ -21,18 +21,16 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warte, bis das Bild-Container-Element sichtbar ist (d.h. die Seite ist geladen)
+# Warte, bis das Bild-Container-Element sichtbar ist
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.imageitem")))
 
 # Scrollen, um sicherzustellen, dass alle Bilder geladen sind
 last_height = driver.execute_script("return document.body.scrollHeight")
 
 while True:
-    # Scrollen nach unten
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(2)  # Warte, damit die Seite nachladen kann
     
-    # Berechne die neue Höhe der Seite und vergleiche mit der alten Höhe
     new_height = driver.execute_script("return document.body.scrollHeight")
     if new_height == last_height:
         break
@@ -42,11 +40,16 @@ while True:
 html = driver.page_source
 driver.quit()
 
+# Debugging: Speichern des gesamten HTML-Contents in einer Datei für die Analyse
+with open("debug_html.html", "w", encoding="utf-8") as f:
+    f.write(html)
+
 # HTML parsen
 soup = BeautifulSoup(html, "html.parser")
 
-# Finde alle Bild-Container
+# Debugging: Gib die Anzahl der gefundenen Bild-Container aus
 image_items = soup.select("span.imageitem")
+print(f"Anzahl der Bild-Container gefunden: {len(image_items)}")
 
 bilder = []
 
@@ -55,11 +58,12 @@ for item in image_items:
     a_tag = item.find("a", class_="thumba")
     img_tag = item.find("img", class_="picthumbs")
 
-    # Überprüfe, ob alle relevanten Tags vorhanden sind
+    # Debugging: Gib jedes gefundene Element aus
+    print(f"Data-ID: {data_id}, Link: {a_tag}, Bild-Tag: {img_tag}")
+
     if not all([data_id, a_tag, img_tag]):
         continue
 
-    # Bildinformationen extrahieren
     eintrag = {
         "id": data_id,
         "link": a_tag["href"],
