@@ -51,13 +51,19 @@ for item in image_items:
     a_tag = item.find("a", class_="thumba")
     img_tag = item.find("img", class_="picthumbs")
 
+    # Wenn keine der benötigten Daten gefunden wird, überspringen
     if not all([data_id, a_tag, img_tag]):
         continue
+
+    # Hole den Bild-Link (src)
+    image_src = img_tag.get("src", "")
+    if not image_src:
+        image_src = "N/A"  # Setze einen Platzhalter, falls kein Bild vorhanden ist
 
     eintrag = {
         "id": data_id,
         "link": a_tag["href"],
-        "image_src": img_tag["src"],
+        "image_src": image_src,
         "alt": img_tag.get("alt", "")
     }
 
