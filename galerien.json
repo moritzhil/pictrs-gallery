@@ -1,15 +1,21 @@
 [
     {
+        "titel": "See",
+        "link": "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de",
+        "bilder_count": "30 Bilder",
+        "vorschaubild": "https://pictrs2.b-cdn.net/1b7873214acc1820c0615adc6ea12285/large_DSC00802.jpg?v=1744271940"
+    },
+    {
         "titel": "Australia",
         "link": "https://www.pictrs.com/moritz-hilpert/6296877/australia?l=de",
         "bilder_count": "6 Bilder",
-        "vorschaubild": "https://pictrs2.b-cdn.net/daf37855025a40d0f11b82cccf36e1d6/large_DSC00740-Bearbeitet.jpg?v=1744235147"
+        "vorschaubild": "https://pictrs2.b-cdn.net/23e19514cf296f723fa06a01e91479d2/large_DSC03690-Bearbeitet-Bearbeitet-Bearbeitet.jpg?v=1744235147"
     },
     {
         "titel": "Den Haag",
         "link": "https://www.pictrs.com/moritz-hilpert/7742354/den-haag?l=de",
         "bilder_count": "25 Bilder",
-        "vorschaubild": "https://pictrs2.b-cdn.net/06764debd6e9afb088c4352a2e29292c/large_DSC06379.jpg?v=1744115908"
+        "vorschaubild": "https://pictrs2.b-cdn.net/5f02858eae8bac89395dc5571e46d74f/large_DSC06443.jpg?v=1744115910"
     },
     {
         "titel": "Neapel",
@@ -21,7 +27,7 @@
         "titel": "Ravello",
         "link": "https://www.pictrs.com/moritz-hilpert/8816720/ravello?l=de",
         "bilder_count": "5 Bilder",
-        "vorschaubild": "https://pictrs2.b-cdn.net/ffb60947d662e2476c4e13c11cd9c3a5/large_DSC00251.jpg?v=1744114282"
+        "vorschaubild": "https://pictrs2.b-cdn.net/80580a78476c16e58264349344dc96ac/large_DSC00258.jpg?v=1744114282"
     },
     {
         "titel": "Rotterdam",
