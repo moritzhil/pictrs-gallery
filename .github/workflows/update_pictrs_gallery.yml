@@ -41,7 +41,7 @@ jobs:
     # Führe das Scraper-Skript aus
     - name: Run the Scraper Script
       run: |
-        python pictrs-scraper-gallery.py  # Führe das Python-Skript aus, das den Scraping-Job übernimmt
+        python pictrs_scraper_gallery.py  # Führe das Python-Skript aus, das den Scraping-Job übernimmt
 
     # Commit und Push der generierten JSON-Datei
     - name: Commit changes
