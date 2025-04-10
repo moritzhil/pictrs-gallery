@@ -1,4 +1,4 @@
-name: Update Pictrs Galleries
+name: Update Images from Gallery
 
 on:
   schedule:
@@ -31,7 +31,7 @@ jobs:
 
     - name: Run the Scraper Script
       run: |
-        python pictrs_scraper_gallery.py
+        python pictrs_scraper_images-from-gallery.py
 
     - name: Commit changes
       run: |
