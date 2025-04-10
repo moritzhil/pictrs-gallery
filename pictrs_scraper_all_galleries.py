@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import os
+import re
 
 SHOP_URL = 'https://www.pictrs.com/moritz-hilpert?l=de'
 BASE_URL = 'https://www.pictrs.com'
@@ -57,14 +59,14 @@ def fetch_galerien():
 
         galerien.append(galerie)
 
-    return galerien
+        # Speichern jeder Galerie in einer eigenen JSON-Datei
+        safe_title = re.sub(r'[^\w\s-]', '', galerie_titel).strip().replace(' ', '_')  # Ersetzt ungültige Zeichen
+        filename = f"{safe_title}.json"
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(galerie, f, ensure_ascii=False, indent=4)
+        print(f"✔️ Galerie '{galerie_titel}' als JSON gespeichert!")
 
-def save_to_json(galerien):
-    with open('all_pictrs_galleries.json', 'w', encoding='utf-8') as f:
-        json.dump(galerien, f, ensure_ascii=False, indent=4)
-    print("✔️  JSON-Datei erfolgreich gespeichert!")
+    return galerien
 
 if __name__ == "__main__":
     galerien = fetch_galerien()
-    if galerien:
-        save_to_json(galerien)
