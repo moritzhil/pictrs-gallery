@@ -3,10 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from bs4 import BeautifulSoup
 
 # Setze Optionen für den Headless-Modus
 options = Options()
@@ -19,8 +19,9 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warte, bis das Bild-Container-Element sichtbar ist (d.h. die Seite ist geladen)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.imageitem")))
+# Warte darauf, dass die Seite vollständig geladen ist
+# Warte darauf, dass mindestens ein Bild-Container geladen wird (z.B. anhand der ersten "imageitem" span)
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "imageitem")))
 
 # HTML der Seite extrahieren
 html = driver.page_source
@@ -32,6 +33,9 @@ soup = BeautifulSoup(html, "html.parser")
 # Finde alle Bild-Container
 image_items = soup.select("span.imageitem")
 
+# Debugging: Gib die Anzahl der gefundenen Bild-Container aus
+print(f"Gefundene Bild-Container: {len(image_items)}")
+
 bilder = []
 
 for item in image_items:
@@ -39,11 +43,12 @@ for item in image_items:
     a_tag = item.find("a", class_="thumba")
     img_tag = item.find("img", class_="picthumbs")
 
-    # Überprüfe, ob alle relevanten Tags vorhanden sind
+    # Debugging: Gib jedes gefundene Element aus
+    print(f"Data-ID: {data_id}, Link: {a_tag}, Bild-Tag: {img_tag}")
+
     if not all([data_id, a_tag, img_tag]):
         continue
 
-    # Bildinformationen extrahieren
     eintrag = {
         "id": data_id,
         "link": a_tag["href"],
