@@ -5,7 +5,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
@@ -50,6 +49,7 @@ image_items = soup.select("span.imageitem")
 
 bilder = []
 
+# Gehe durch alle gefundenen Bilder und extrahiere deren Links
 for item in image_items:
     data_id = item.get("data-id")
     a_tag = item.find("a", class_="thumba")
@@ -58,17 +58,29 @@ for item in image_items:
     if not all([data_id, a_tag, img_tag]):
         continue
 
+    # Klicke auf das Bild, um die große Version anzuzeigen
+    image_link = a_tag["href"]
+    driver.get(image_link)  # Öffnet den Link des Bildes in einem neuen Tab
+
+    # Warte, bis das Bild geladen ist
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, "image-preview-img")))
+
+    # Extrahiere die große Bild-URL
+    large_image_tag = driver.find_element(By.CLASS_NAME, "image-preview-img")
+    large_image_url = large_image_tag.get_attribute("src")
+
+    # Speichere die Bilddaten
     eintrag = {
         "id": data_id,
-        "link": a_tag["href"],
-        "image_src": img_tag["src"],
+        "link": image_link,
+        "large_image_src": large_image_url,
         "alt": img_tag.get("alt", "")
     }
 
     bilder.append(eintrag)
 
 # Speichern in eine JSON-Datei
-with open("bilder.json", "w", encoding="utf-8") as f:
+with open("bilder_mit_large_images.json", "w", encoding="utf-8") as f:
     json.dump(bilder, f, indent=2, ensure_ascii=False)
 
-print(f"{len(bilder)} Bilder gespeichert in bilder.json")
+print(f"{len(bilder)} Bilder mit großen Links gespeichert in bilder_mit_large_images.json")
