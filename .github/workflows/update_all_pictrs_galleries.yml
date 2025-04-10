@@ -1,4 +1,4 @@
-name: Update All Pictrs Galleries
+name: Update Pictrs Galleries
 
 on:
   schedule:
@@ -31,11 +31,11 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
 
-          git add *.json  # Fügt alle generierten JSON-Dateien hinzu
+          git add *.json
           if git diff --cached --quiet; then
             echo "Keine Änderungen – nichts zu committen."
           else
-            git commit -m "Update pictrs galleries JSON files (automatisch via Action)"
+            git commit -m "Update Pictrs galleries (automatisch via Action)"
             git push
           fi
         env:
