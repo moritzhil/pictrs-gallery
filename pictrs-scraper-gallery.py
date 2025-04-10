@@ -3,8 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-import time
 
 # Setze Optionen für den Headless-Modus
 options = Options()
@@ -17,8 +19,8 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warte, bis die Seite vollständig geladen ist (ggf. anpassen)
-time.sleep(5)
+# Warte, bis das Bild-Container-Element sichtbar ist (d.h. die Seite ist geladen)
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.imageitem")))
 
 # HTML der Seite extrahieren
 html = driver.page_source
@@ -37,9 +39,11 @@ for item in image_items:
     a_tag = item.find("a", class_="thumba")
     img_tag = item.find("img", class_="picthumbs")
 
+    # Überprüfe, ob alle relevanten Tags vorhanden sind
     if not all([data_id, a_tag, img_tag]):
         continue
 
+    # Bildinformationen extrahieren
     eintrag = {
         "id": data_id,
         "link": a_tag["href"],
