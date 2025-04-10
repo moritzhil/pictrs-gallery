@@ -8,7 +8,6 @@ from urllib.parse import urlparse
 # Liste der Links zu den Galerien, die du durchsuchen möchtest
 GALLERY_URLS = [
     'https://www.pictrs.com/moritz-hilpert?l=de',  # Beispiel-Link
-    'https://www.pictrs.com/moritz-hilpert/8520217/best-of-nature-und-landscape?l=de',
     # Hier kannst du beliebig viele Links hinzufügen
 ]
 
