@@ -60,7 +60,7 @@ def fetch_galerien():
     return galerien
 
 def save_to_json(galerien):
-    with open('galerien.json', 'w', encoding='utf-8') as f:
+    with open('all_pictrs_galleries.json', 'w', encoding='utf-8') as f:
         json.dump(galerien, f, ensure_ascii=False, indent=4)
     print("✔️  JSON-Datei erfolgreich gespeichert!")
 
