@@ -1,4 +1,4 @@
-name: Update Images from Gallery
+name: Update images from gallery
 
 on:
   schedule:
