@@ -55,15 +55,13 @@ for item in image_items:
     if not all([data_id, a_tag, img_tag]):
         continue
 
-    # Hole den Bild-Link (src)
-    image_src = img_tag.get("src", "")
-    if not image_src:
-        image_src = "N/A"  # Setze einen Platzhalter, falls kein Bild vorhanden ist
+    # Hole den Bild-Link (aus dem href-Attribut des a-Tags)
+    image_src = a_tag["href"]  # Der Link des Bildes ist im href-Attribut des a-Tags
 
     eintrag = {
         "id": data_id,
-        "link": a_tag["href"],
-        "image_src": image_src,
+        "link": image_src,
+        "image_src": image_src,  # Bild-URL ist nun die gleiche wie der Link
         "alt": img_tag.get("alt", "")
     }
 
