@@ -13,7 +13,7 @@ import time
 
 # URLs der Galleries
 urls = [
-    "",
+    "https://www.pictrs.com/moritz-hilpert/6296877/australia?l=de",
     # weitere URLs hier ergänzen
 ]
 
