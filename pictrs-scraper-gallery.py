@@ -21,13 +21,13 @@ url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
 # Warte, bis die Seite vollständig geladen ist (Warte auf das erste Bild-Tag)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "picthumbs")))
+WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "picthumbs")))
 
 # Optional: Scrollen, um sicherzustellen, dass alle Bilder geladen sind
 last_height = driver.execute_script("return document.body.scrollHeight")
 while True:
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(3)  # Gib der Seite Zeit zum Nachladen
+    time.sleep(5)  # Längere Wartezeit zwischen den Scrolls, um sicherzustellen, dass Bilder nachgeladen werden
     new_height = driver.execute_script("return document.body.scrollHeight")
     if new_height == last_height:
         break
