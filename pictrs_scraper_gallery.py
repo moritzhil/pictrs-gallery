@@ -80,4 +80,4 @@ for item in image_items:
 with open("pictrs_gallery.json", "w", encoding="utf-8") as f:
     json.dump(bilder, f, indent=2, ensure_ascii=False)
 
-print(f"{len(bilder)} Bilder gespeichert in pictrs_gallery.json)
+print(f"{len(bilder)} Bilder gespeichert in pictrs_gallery.json")
