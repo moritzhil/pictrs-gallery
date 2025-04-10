@@ -21,6 +21,10 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt  # Installiere alle Abhängigkeiten aus der requirements.txt
+   
+    - name: Install Webdriver Manager
+      run: |
+       pip install --upgrade webdriver-manager  # Installiere die neueste Version
 
     - name: Install Google Chrome
       run: |
