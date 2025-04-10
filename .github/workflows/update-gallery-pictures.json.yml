@@ -1,0 +1,36 @@
+name: Scrape Pictrs Images
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Läuft täglich um 6 Uhr UTC
+  workflow_dispatch:     # Manuelles Auslösen möglich
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run Script
+      run: python script.py
+
+    - name: Commit changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add bilder.json
+        git commit -m "Update bilder.json (automatisch via Action)" || echo "No changes"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
