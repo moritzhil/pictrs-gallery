@@ -31,7 +31,7 @@ jobs:
 
     - name: Run the Scraper Script
       run: |
-        python pictrs_scraper_images-from-gallery.py
+        python pictrs_scraper_images_from_gallery.py
 
     - name: Commit changes
       run: |
