@@ -1,4 +1,4 @@
-name: Update Gallery JSON
+name: Update All Pictrs Galleries JSON
 
 on:
   schedule:
@@ -24,7 +24,7 @@ jobs:
           pip install requests beautifulsoup4
 
       - name: Run pictrs scraper
-        run: python pictrs_scraper.py
+        run: python pictrs_scraper_all.py
 
       - name: Commit and push JSON
         run: |
