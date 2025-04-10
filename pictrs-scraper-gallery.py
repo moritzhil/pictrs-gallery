@@ -49,7 +49,7 @@ for item in image_items:
     # Extrahiere relevante Daten
     data_id = item.get("data-id")
     a_tag = item.find("a", class_="thumba")
-    img_tag = item.find("img", class_="picthumbs")
+    img_tag = item.find("img", class_="picthumbs js-picthumbs")
 
     if not all([data_id, a_tag, img_tag]):
         continue
