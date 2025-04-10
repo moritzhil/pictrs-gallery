@@ -115,7 +115,7 @@ for url in gallery_links:
     all_bilder.extend(bilder)
 
 # Speichern der gesamten Bilddaten in einer JSON-Datei
-filename = "all_pictrs_images.json"
+filename = "all_images.json"
 with open(filename, "w", encoding="utf-8") as f:
     json.dump(all_bilder, f, indent=2, ensure_ascii=False)
 
