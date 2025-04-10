@@ -49,7 +49,7 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add bilder.json
-        git commit -m "Update bilder.json (automatisch via Action)" || echo "No changes"
+        git commit -m "Update pictrs_gallery.json (automatisch via Action)" || echo "No changes"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Push die Änderungen in das Repository
