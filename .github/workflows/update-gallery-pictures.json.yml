@@ -2,7 +2,7 @@ name: Scrape Pictrs Images
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Läuft täglich um 6 Uhr UTC
+    - cron: '0 * * * *'  # Jede Stunde
   workflow_dispatch:     # Manuelles Auslösen möglich
 
 jobs:
