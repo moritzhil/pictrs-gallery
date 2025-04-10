@@ -2,16 +2,20 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
-import re
 
-SHOP_URL = 'https://www.pictrs.com/moritz-hilpert?l=de'
+# Liste der Links zu den Galerien, die du durchsuchen möchtest
+GALLERY_URLS = [
+    'https://www.pictrs.com/moritz-hilpert?l=de',  # Beispiel-Link
+    # Hier kannst du beliebig viele Links hinzufügen
+]
+
 BASE_URL = 'https://www.pictrs.com'
 
-def fetch_galerien():
-    response = requests.get(SHOP_URL)
+def fetch_galerien(url):
+    response = requests.get(url)
     
     if response.status_code != 200:
-        print(f"Fehler beim Abrufen der Seite. Status Code: {response.status_code}")
+        print(f"Fehler beim Abrufen der Seite. Status Code: {response.status_code} für URL: {url}")
         return []
 
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -19,7 +23,7 @@ def fetch_galerien():
 
     # Alle Galerie-Links finden
     gallery_links = soup.find_all('a', class_='albums-grid-item')
-    print(f"{len(gallery_links)} Galerien gefunden")
+    print(f"{len(gallery_links)} Galerien gefunden auf {url}")
 
     # Durch alle gefundenen Galerie-Links iterieren
     for gallery_link in gallery_links:
@@ -59,14 +63,19 @@ def fetch_galerien():
 
         galerien.append(galerie)
 
-        # Speichern jeder Galerie in einer eigenen JSON-Datei
-        safe_title = re.sub(r'[^\w\s-]', '', galerie_titel).strip().replace(' ', '_')  # Ersetzt ungültige Zeichen
-        filename = f"{safe_title}.json"
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(galerie, f, ensure_ascii=False, indent=4)
-        print(f"✔️ Galerie '{galerie_titel}' als JSON gespeichert!")
-
     return galerien
 
+def save_to_json(galerien, url):
+    # Sanitize the URL to create a valid file name
+    safe_url = url.replace('https://', '').replace('/', '_')
+    filename = f"gallery_data_{safe_url}.json"
+    
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(galerien, f, ensure_ascii=False, indent=4)
+    print(f"✔️  Daten für {len(galerien)} Galerien aus {url} gespeichert als {filename}")
+
 if __name__ == "__main__":
-    galerien = fetch_galerien()
+    for url in GALLERY_URLS:
+        galerien = fetch_galerien(url)
+        if galerien:
+            save_to_json(galerien, url)
