@@ -34,8 +34,8 @@ jobs:
           if git diff --quiet && git diff --staged --quiet; then
             echo "Keine Änderungen – nichts zu committen."
           else
-            git add galerien.json
-            git commit -m "Update gallery.json"
+            git add all_pictrs_galleries.json
+            git commit -m "Update all_pictrs_galleries.json"
             git push
           fi
         env:
