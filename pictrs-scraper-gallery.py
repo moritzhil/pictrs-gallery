@@ -45,24 +45,33 @@ image_items = soup.find_all("span", class_="imageitem")
 
 bilder = []
 
+# Initialisiere den WebDriver nochmal für das Klicken auf die Bilder (für die Lightbox)
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
 for item in image_items:
     # Extrahiere relevante Daten
     data_id = item.get("data-id")
     a_tag = item.find("a", class_="thumba")
-    img_tag = item.find("img", class_="picthumbs")
 
     # Wenn keine der benötigten Daten gefunden wird, überspringen
-    if not all([data_id, a_tag, img_tag]):
+    if not all([data_id, a_tag]):
         continue
 
-    # Hole den Bild-Link (aus dem href-Attribut des a-Tags)
-    image_src = a_tag["href"]  # Der Link des Bildes ist im href-Attribut des a-Tags
+    # Klicke auf das Bild-Link, um die Lightbox zu öffnen
+    driver.get(a_tag["href"])
+
+    # Warte auf das Bild in der Lightbox (bis das img-Tag mit der ID image-preview-img sichtbar ist)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "image-preview-img")))
+
+    # Extrahiere den Link zur hochauflösenden Bilddatei
+    img_tag = driver.find_element(By.ID, "image-preview-img")
+    image_src = img_tag.get_attribute("src")
 
     eintrag = {
         "id": data_id,
-        "link": image_src,
-        "image_src": image_src,  # Bild-URL ist nun die gleiche wie der Link
-        "alt": img_tag.get("alt", "")
+        "link": a_tag["href"],
+        "image_src": image_src,  # Der Link zur hochauflösenden Bilddatei
+        "alt": img_tag.get_attribute("alt")
     }
 
     bilder.append(eintrag)
