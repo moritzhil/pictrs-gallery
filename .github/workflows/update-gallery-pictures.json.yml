@@ -7,7 +7,7 @@ on:
 
 jobs:
   scrape:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Verwenden von Ubuntu (über GitHub-hosted Runner)
 
     steps:
     - name: Checkout Repo
@@ -16,14 +16,24 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.11
+        python-version: 3.11  # Stelle sicher, dass die gewünschte Python-Version installiert wird
 
     - name: Install Dependencies
       run: |
-        pip install -r requirements.txt
+        pip install -r requirements.txt  # Installiere alle Abhängigkeiten aus der requirements.txt
 
-    - name: Run Script
-      run: python pictrs-scraper-gallery.py
+    - name: Install Google Chrome
+      run: |
+        sudo apt update
+        sudo apt install -y google-chrome-stable  # Installiere Google Chrome direkt
+
+    - name: Install ChromeDriver via webdriver-manager
+      run: |
+        pip install webdriver-manager  # Installiere webdriver-manager, um den ChromeDriver zu verwalten
+
+    - name: Run the Scraper Script
+      run: |
+        python pictrs-scraper-gallery.py  # Führe das Python-Skript aus, das den Scraping-Job übernimmt
 
     - name: Commit changes
       run: |
@@ -33,4 +43,4 @@ jobs:
         git commit -m "Update bilder.json (automatisch via Action)" || echo "No changes"
         git push
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Push die Änderungen in das Repository
