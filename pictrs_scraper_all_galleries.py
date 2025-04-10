@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-SHOP_URL = 'https://www.pictrs.com/moritz-hilpert/8520217/best-of-nature-und-landscape?l=de'
+SHOP_URL = 'https://www.pictrs.com/moritz-hilpert?l=de'
 BASE_URL = 'https://www.pictrs.com'
 
 def fetch_galerien():
