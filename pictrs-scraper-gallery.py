@@ -1,24 +1,23 @@
 import json
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
+import time
 
 # Setze Optionen für den Headless-Modus
 options = Options()
-options.headless = True
+options.add_argument('--headless')  # Headless-Modus aktivieren
 
-# Setup Chrome WebDriver mit Selenium
+# Initialisiere den WebDriver
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 # Lade die Pictrs-Seite
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warten bis die Seite vollständig geladen ist (ggf. anpassen)
+# Warte, bis die Seite vollständig geladen ist (ggf. anpassen)
 time.sleep(5)
 
 # HTML der Seite extrahieren
