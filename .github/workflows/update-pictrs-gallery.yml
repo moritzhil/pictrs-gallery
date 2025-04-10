@@ -1,4 +1,4 @@
-name: Scrape Pictrs Images
+name: Update Pictrs Gallery
 
 on:
   schedule:
