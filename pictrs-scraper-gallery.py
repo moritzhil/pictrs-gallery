@@ -25,13 +25,17 @@ WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "
 
 # Optional: Scrollen, um sicherzustellen, dass alle Bilder geladen sind
 last_height = driver.execute_script("return document.body.scrollHeight")
-while True:
+scroll_count = 0
+max_scrolls = 5  # Maximale Anzahl an Scroll-Versuchen
+
+while scroll_count < max_scrolls:
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(5)  # Gib der Seite Zeit zum Nachladen
     new_height = driver.execute_script("return document.body.scrollHeight")
     if new_height == last_height:
         break
     last_height = new_height
+    scroll_count += 1
 
 # HTML der Seite extrahieren
 html = driver.page_source
@@ -40,7 +44,7 @@ driver.quit()
 # HTML parsen
 soup = BeautifulSoup(html, "html.parser")
 
-# Finde alle Bild-Container
+# Alle Bilder auf der Seite extrahieren
 image_items = soup.find_all("span", class_="imageitem")
 
 bilder = []
@@ -68,6 +72,19 @@ for item in image_items:
     }
 
     bilder.append(eintrag)
+
+# Falls Bilder fehlen, versuche zusätzliche `img`-Tags zu extrahieren
+extra_images = soup.find_all("img")
+for img_tag in extra_images:
+    # Manchmal sind zusätzliche Bilder auf der Seite
+    img_src = img_tag.get("src", "")
+    if img_src and img_src != "N/A":
+        bilder.append({
+            "id": "unknown",  # Wir haben keine `data-id` für diese Bilder
+            "link": img_tag.get("src", ""),
+            "image_src": img_src,
+            "alt": img_tag.get("alt", "Unknown Alt Text")
+        })
 
 # Speichern in eine JSON-Datei
 with open("bilder.json", "w", encoding="utf-8") as f:
