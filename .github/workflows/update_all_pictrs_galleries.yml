@@ -24,7 +24,7 @@ jobs:
           pip install requests beautifulsoup4
 
       - name: Run pictrs scraper
-        run: python pictrs_scraper_all.py
+        run: python pictrs_scraper_all_galleries.py
 
       - name: Commit and push JSON
         run: |
