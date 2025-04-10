@@ -1,4 +1,4 @@
-name: Update Pictrs Galleries
+name: Update All Pictrs Galleries
 
 on:
   schedule:
