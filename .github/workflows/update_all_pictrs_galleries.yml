@@ -1,4 +1,4 @@
-name: Update All Pictrs Galleries JSON
+name: Update All Pictrs Galleries
 
 on:
   schedule:
