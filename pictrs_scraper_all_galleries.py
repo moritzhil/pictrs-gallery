@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
+import re
 
 # Liste der Links zu den Galerien, die du durchsuchen möchtest
 GALLERY_URLS = [
@@ -65,10 +66,20 @@ def fetch_galerien(url):
 
     return galerien
 
+def generate_filename(url):
+    # Extrahiert den Teil der URL, der für den Dateinamen verwendet wird
+    url_parts = url.split('/')
+    # Der erste Teil ist der Haupt-Teil (z.B. 'moritz-hilpert'), der zweite Teil ist die ID (z.B. '8816720')
+    main_title = url_parts[2] if len(url_parts) > 2 else url_parts[0].replace('https://www.pictrs.com/', '')
+    gallery_id = url_parts[3] if len(url_parts) > 3 else ''
+    if gallery_id:
+        filename = f"{main_title}-{gallery_id}-galleries.json"
+    else:
+        filename = f"{main_title}-galleries.json"
+    return filename
+
 def save_to_json(galerien, url):
-    # Sanitize the URL to create a valid file name
-    safe_url = url.replace('https://', '').replace('/', '_')
-    filename = f"gallery_data_{safe_url}.json"
+    filename = generate_filename(url)
     
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(galerien, f, ensure_ascii=False, indent=4)
