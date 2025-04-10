@@ -17,7 +17,7 @@ options.add_argument('--headless')  # Headless-Modus aktivieren
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 # Lade die Pictrs-Seite
-url = "https://www.pictrs.com/moritz-hilpert/6296877/australia?l=de"
+url = "https://www.pictrs.com/moritz-hilpert/8520217"
 driver.get(url)
 
 # Warte, bis die Seite vollständig geladen ist
