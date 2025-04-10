@@ -1,4 +1,4 @@
-name: Update All Pictrs Galleries
+name: Update Pictrs Galleries
 
 on:
   schedule:
@@ -31,7 +31,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
 
+          # Alle generierten JSON-Dateien hinzufügen
           git add *.json
+          
+          # Wenn keine Änderungen vorhanden sind, überspringe das Commit
           if git diff --cached --quiet; then
             echo "Keine Änderungen – nichts zu committen."
           else
