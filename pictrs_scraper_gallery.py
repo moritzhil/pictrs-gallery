@@ -77,7 +77,7 @@ for item in image_items:
     bilder.append(eintrag)
 
 # Speichern in eine JSON-Datei
-with open("bilder.json", "w", encoding="utf-8") as f:
+with open("pictrs_gallery.json", "w", encoding="utf-8") as f:
     json.dump(bilder, f, indent=2, ensure_ascii=False)
 
 print(f"{len(bilder)} Bilder gespeichert in bilder.json")
