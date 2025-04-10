@@ -1,4 +1,4 @@
-name: Update All Pictrs Galleries
+name: Update all galleries
 
 on:
   schedule:
@@ -38,7 +38,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Keine Änderungen – nichts zu committen."
           else
-            git commit -m "Update Pictrs galleries (automatisch via Action)"
+            git commit -m "Update all galleries (automatisch via Action)"
             git push
           fi
         env:
