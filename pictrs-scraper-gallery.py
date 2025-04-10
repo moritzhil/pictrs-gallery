@@ -20,14 +20,14 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warte, bis die Seite vollständig geladen ist (Warte auf das erste Bild-Tag)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "picthumbs")))
+# Warte, bis die Seite vollständig geladen ist
+WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "imageitem")))
 
 # Optional: Scrollen, um sicherzustellen, dass alle Bilder geladen sind
 last_height = driver.execute_script("return document.body.scrollHeight")
 while True:
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(3)  # Gib der Seite Zeit zum Nachladen
+    time.sleep(5)  # Gib der Seite Zeit zum Nachladen
     new_height = driver.execute_script("return document.body.scrollHeight")
     if new_height == last_height:
         break
@@ -40,8 +40,8 @@ driver.quit()
 # HTML parsen
 soup = BeautifulSoup(html, "html.parser")
 
-# Finde alle Bild-Container (Achte auf richtige Selektoren!)
-image_items = soup.select("span.imageitem")
+# Finde alle Bild-Container
+image_items = soup.find_all("span", class_="imageitem")
 
 bilder = []
 
