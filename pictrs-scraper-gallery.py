@@ -3,10 +3,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+import time
 
 # Setze Optionen für den Headless-Modus
 options = Options()
@@ -19,9 +21,22 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warte darauf, dass die Seite vollständig geladen ist
-# Warte darauf, dass mindestens ein Bild-Container geladen wird (z.B. anhand der ersten "imageitem" span)
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "imageitem")))
+# Warte, bis das Bild-Container-Element sichtbar ist (d.h. die Seite ist geladen)
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.imageitem")))
+
+# Scrollen, um sicherzustellen, dass alle Bilder geladen sind
+last_height = driver.execute_script("return document.body.scrollHeight")
+
+while True:
+    # Scrollen nach unten
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(2)  # Warte, damit die Seite nachladen kann
+    
+    # Berechne die neue Höhe der Seite und vergleiche mit der alten Höhe
+    new_height = driver.execute_script("return document.body.scrollHeight")
+    if new_height == last_height:
+        break
+    last_height = new_height
 
 # HTML der Seite extrahieren
 html = driver.page_source
@@ -33,9 +48,6 @@ soup = BeautifulSoup(html, "html.parser")
 # Finde alle Bild-Container
 image_items = soup.select("span.imageitem")
 
-# Debugging: Gib die Anzahl der gefundenen Bild-Container aus
-print(f"Gefundene Bild-Container: {len(image_items)}")
-
 bilder = []
 
 for item in image_items:
@@ -43,12 +55,11 @@ for item in image_items:
     a_tag = item.find("a", class_="thumba")
     img_tag = item.find("img", class_="picthumbs")
 
-    # Debugging: Gib jedes gefundene Element aus
-    print(f"Data-ID: {data_id}, Link: {a_tag}, Bild-Tag: {img_tag}")
-
+    # Überprüfe, ob alle relevanten Tags vorhanden sind
     if not all([data_id, a_tag, img_tag]):
         continue
 
+    # Bildinformationen extrahieren
     eintrag = {
         "id": data_id,
         "link": a_tag["href"],
