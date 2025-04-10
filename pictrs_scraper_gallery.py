@@ -13,8 +13,8 @@ import time
 
 # URLs der Galleries
 urls = [
-    "https://www.pictrs.com/moritz-hilpert/8520217",
-    "https://www.pictrs.com/moritz-hilpert/6296877",
+    "https://www.pictrs.com/moritz-hilpert/8520217?l=de",
+    "https://www.pictrs.com/moritz-hilpert/6296877?l=de",
     # weitere URLs hier ergänzen
 ]
 
