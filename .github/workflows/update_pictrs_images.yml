@@ -1,0 +1,39 @@
+name: Update Pictrs Images
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Das Skript wird jede Stunde ausgeführt (Minuten, Stunden, Tage, Monate, Wochentage)
+  workflow_dispatch:  # Ermöglicht es, den Workflow manuell auszulösen
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest  # Die Umgebung, in der der Job ausgeführt wird
+
+    steps:
+      # Schritt 1: Checkout des Repositories
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Schritt 2: Python einrichten
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Wähle die passende Python-Version
+
+      # Schritt 3: Abhängigkeiten installieren (z.B. Selenium, BeautifulSoup, webdriver-manager)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium beautifulsoup4 webdriver-manager
+
+      # Schritt 4: Führe das Python-Skript aus
+      - name: Run script
+        run: |
+          python <path_to_your_script>/dein_skript.py  # Ersetze <path_to_your_script> mit dem tatsächlichen Pfad zu deinem Skript
+          
+      # Optionaler Schritt 5: Speichern der JSON-Datei in GitHub (falls erforderlich)
+      - name: Upload JSON to GitHub (optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: all_pictrs_images
+          path: all_pictrs_images.json
