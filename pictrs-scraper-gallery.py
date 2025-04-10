@@ -11,7 +11,8 @@ import time
 
 # Setze Optionen für den Headless-Modus
 options = Options()
-# options.add_argument('--headless')  # Deaktiviere den Headless-Modus, um den Browser sichtbar zu machen
+# Entferne ggf. das --user-data-dir Argument, wenn du es verwendest.
+# options.add_argument('--user-data-dir=/path/to/unique/directory')  # Setze hier ein einzigartiges Verzeichnis
 
 # Initialisiere den WebDriver
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
