@@ -35,7 +35,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Keine Änderungen – nichts zu committen."
           else
-            git commit -m "Update pictrs galleries (automatisch via Action)"
+            git commit -m "Update all pictrs galleries (automatisch via Action)"
             git push
           fi
         env:
