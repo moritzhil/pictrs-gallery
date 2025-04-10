@@ -4,7 +4,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
@@ -21,7 +20,7 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 url = "https://www.pictrs.com/moritz-hilpert/9528141/see?l=de"
 driver.get(url)
 
-# Warte, bis das Bild-Container-Element sichtbar ist
+# Warte, bis das erste Bild sichtbar ist (damit die Seite genug Zeit hat, Bilder zu laden)
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.imageitem")))
 
 # Scrollen, um sicherzustellen, dass alle Bilder geladen sind
@@ -40,10 +39,6 @@ while True:
 html = driver.page_source
 driver.quit()
 
-# Debugging: Speichern des gesamten HTML-Contents in einer Datei für die Analyse
-with open("debug_html.html", "w", encoding="utf-8") as f:
-    f.write(html)
-
 # HTML parsen
 soup = BeautifulSoup(html, "html.parser")
 
@@ -61,13 +56,21 @@ for item in image_items:
     # Debugging: Gib jedes gefundene Element aus
     print(f"Data-ID: {data_id}, Link: {a_tag}, Bild-Tag: {img_tag}")
 
+    # Fehlerbehandlung für fehlenden img_tag
     if not all([data_id, a_tag, img_tag]):
+        print(f"Fehlendes Bild oder Link für ID: {data_id}")
+        continue
+
+    image_src = img_tag.get("src")
+    
+    if not image_src:
+        print(f"Kein src gefunden für ID: {data_id}, überprüfe HTML: {item}")
         continue
 
     eintrag = {
         "id": data_id,
         "link": a_tag["href"],
-        "image_src": img_tag["src"],
+        "image_src": image_src,  # Hier wird das src des Bildes extrahiert
         "alt": img_tag.get("alt", "")
     }
 
