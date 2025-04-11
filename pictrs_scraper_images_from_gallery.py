@@ -1,5 +1,5 @@
 import json
-import os
+import time
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -9,12 +9,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-import time
 
 # URLs der Galleries
 urls = [
     "https://www.pictrs.com/moritz-hilpert/6296877/australia?l=de",
-    # weitere URLs hier ergänzen
+    # Weitere URLs hier ergänzen
 ]
 
 # Selenium-Optionen
@@ -61,24 +60,21 @@ for url in urls:
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     for item in image_items:
-        data_id = item.get("data-id")
         a_tag = item.find("a", class_="thumba")
-        if not all([data_id, a_tag]):
+        if not a_tag:
             continue
         driver.get(a_tag["href"])
         try:
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "image-preview-img")))
             img_tag = driver.find_element(By.ID, "image-preview-img")
-            image_src = img_tag.get_attribute("src")
+            image_url = img_tag.get_attribute("src")
             eintrag = {
-                "id": data_id,
                 "link": a_tag["href"],
-                "image_src": image_src,
-                "alt": img_tag.get_attribute("alt")
+                "image_url": image_url
             }
             bilder.append(eintrag)
         except Exception as e:
-            print(f"Fehler bei Bild {data_id}: {e}")
+            print(f"Fehler bei Bild: {e}")
 
     driver.quit()
 
