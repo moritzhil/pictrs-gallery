@@ -96,12 +96,10 @@ try:
                 try:
                     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "image-preview-img")))
                     img_tag = driver.find_element(By.ID, "image-preview-img")
-                    image_src = img_tag.get_attribute("src")
+                    image_url = img_tag.get_attribute("src")  # Hier wird `image_src` zu `image_url` geändert
                     eintrag = {
-                        "id": data_id,
                         "link": img_page_url,
-                        "image_src": image_src,
-                        "alt": img_tag.get_attribute("alt")
+                        "image_url": image_url  # 'image_src' wird zu 'image_url' geändert
                     }
                     bilder.append(eintrag)
                 except Exception as e:
